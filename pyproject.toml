@@ -1,0 +1,14 @@
+[project]
+name = "leftclickbench"
+version = "0.1.0"
+description = "An AI benchmark for clicking performance"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pillow>=11.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
