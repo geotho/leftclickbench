@@ -137,8 +137,10 @@ def test_invalid_task_encoding():
 
 def test_render_image_output():
     """Test that render_image produces an image file."""
-    task_id = "cb1_RYSFM_1020"  # Use a known valid task ID
-    task = ClickBenchTask.from_string(task_id)
+    for task_id in get_dataset():
+        task = ClickBenchTask.from_string(task_id)
+        if task.background == "full_color":
+            break
     image = render_image(task)
 
     # Ensure output directory exists

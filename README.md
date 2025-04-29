@@ -1,5 +1,7 @@
 # LeftClickBench is a benchmark for clicking performance of AI models
 
+![Example Task: cb1_CR1FS_7702](cb1_CR1FS_7702.png)
+
 LeftClickBench is a generated set of click targets on images of various sizes.
 
 The tasks vary by:
