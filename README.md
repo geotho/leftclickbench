@@ -2,7 +2,7 @@
 
 ![Example tasks](preview.gif)
 
-![Example Task: cb1_CR1FS_7702](preview.png)
+![Example Task: cb1_CR1FS_7702](cb1_CR1FS_7702.png)
 
 LeftClickBench is a generated set of click targets on images of various sizes.
 
