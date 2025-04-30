@@ -158,12 +158,16 @@ def test_render_image_output():
     # os.remove(output_path)
 
 
+EXPECTED_DATASET_SIZE = (
+    2 * 6 * 6 * 5 * 4
+)  # Shapes * Colors * Sizes * Backgrounds * Image Sizes
+
+
 def test_total_dataset_size():
     """Test that the dataset generator produces the expected number of unique tasks."""
     # Calculate expected size based on parameter combinations
-    # Shapes: 2, Colors: 6, Sizes: 6, Backgrounds: 5, Image Sizes: 4
     # One position generated per combination.
-    expected_size = 2 * 6 * 6 * 5 * 4  # 1440
+    expected_size = EXPECTED_DATASET_SIZE  # 1440
 
     gen = get_dataset()
     tasks = list(gen)
@@ -176,6 +180,30 @@ def test_total_dataset_size():
     assert len(unique_tasks) == expected_size, (
         f"Expected {expected_size} unique tasks, but generated {len(unique_tasks)}"
     )
+
+
+@pytest.mark.skipif(
+    not os.environ.get("RUN_FULL_RENDER_TEST"),
+    reason="Set RUN_FULL_RENDER_TEST=1 env var to run full image rendering",
+)
+def test_render_all_images():
+    """Generate and save images for all tasks in the dataset."""
+    output_dir = Path("output/all_images")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    generated_count = 0
+
+    for task_id in get_dataset():
+        task = ClickBenchTask.from_string(task_id)
+        image = render_image(task)
+        output_path = output_dir / f"{task_id}.png"
+        image.save(output_path)
+        generated_count += 1
+
+    assert generated_count == EXPECTED_DATASET_SIZE, (
+        f"Expected to generate {EXPECTED_DATASET_SIZE} images, but generated {generated_count}"
+    )
+    # Check if at least one file exists (basic sanity check)
+    assert any(output_dir.iterdir()), "Output directory is empty after rendering."
 
 
 def test_dataset_consistent():
